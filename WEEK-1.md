@@ -70,8 +70,31 @@ The advantages of character-level RNN:
 - No need to worry about unknown word tokens. It is able to assign a sequence like `mau` non-zero probability. Whereas if `mau` is out of your vocabulary for the word-level language model, you just have to assign it the unknown word token.
 
 The `drawbacks` of using character-level RNN includes:
-- You end up with much longer sequences (Many English sentence will have 10-2- words but may have many dozens of of characters, like (a,b,c,...,z, A,B,C,...,Z,0,1,2,...,9,;, ,/,...))
+- You end up with much longer sequences (Many English sentence will have 10-20 words but may have many dozens of characters, like (a,b,c,...,z, A,B,C,...,Z,0,1,2,...,9,;, ,/,...))
 - It is more hardware, computationally expensive to train, which is not widely used today.
 - It is not as good as word-level language model at `capturing long range dependencies` between how the earlier parts of the sentence also affect the later parts of the sentence.
 - Used in specialized applications where you might need to deal with unknown words a lot or where you have a specialized vocabulary.
 ![](https://github.com/xuyanMax/image-cache/blob/master/rnn/rnn_character_level_language_model.png)
+
+### Vanishing gradients with RNN
+#### What is exploding gradients
+When activation functions are used whose derivatives can take on larger values, one risks encountering the related exploding gradient problem.
+
+#### What is vanishing gradients
+In machine learning, the vanishing gradient problem is a difficulty found in training artificial neural networks with gradient-based learning methods and back-propagation. In such methods, each of the neural network's weights receives an update proportional to the partial derivative of the error function with respect to the current weight in each iteration of training. The problem is that in some cases, the gradient will be vanishingly small, effectively preventing the weight from changing its value. In the worst case, this may completely stop the neural network from further training. As one example of the problem cause, traditional activation functions such as the hyperbolic tangent function have gradients in the range (-1, 1), and back-propagation computes gradients by the chain rule. This has the effect of multiplying n of these small numbers to compute gradients of the "front" layers in an n-layer network, meaning that the gradient (error signal) decreases exponentially with n while the front layers train very slowly.
+
+#### Vanishing gradients with RNN
+But it turns out the basics RNN we've seen so far it's `not` very good at capturing very long-term dependencies. To explain why, you might remember from our early discussions of training very deep neural networks, that we talked about the `vanishing gradients problem`. So there is a very, very deep neural network say, 100 layers or even much deeper than you would carry out forward prop, from left to right and then back prop. And we said that, if this is a very deep neural network, then the gradient from just output y, would have a very hard time propagating back to affect the weights of these earlier layers, to affect the computations in the earlier layers. 
+
+And for an RNN with a similar problem, you have forward prop came from left to right, and then back prop, going from right to left. And it can be quite difficult, because of the same vanishing gradients problem, for the outputs of the errors associated with the later time steps to affect the computations that are earlier. And so in practice, what this means is, it might be difficult to get a neural network to realize that it needs to memorize a singular noun or a plural noun, so that later on in the sequence that can generate either was or were, depending on whether it was singular or plural. And notice that in English, this stuff in the middle could be arbitrarily long, right? So you might need to memorize the singular/plural for a very long time before you get to use that bit of information. 
+
+So because of this problem, the basic RNN model has many `local influences`, meaning that the output y^<3> is mainly influenced by values close to y^<3>. And a value here is mainly influenced by inputs that are somewhere close. And it's difficult for the output here to be strongly influenced by an input that was very early in the sequence. And this is because whatever the output is, whether this got it right, this got it wrong, it's just very difficult for the area to back propagate all the way to the beginning of the sequence, and therefore to modify how the neural network is doing computations earlier in the sequence. 
+
+What can we do about it?    
+### Gated Recurrent Unit(GRU)
+
+### Long Short Term Memory(LSTM)
+
+### Bidirectional RNN
+
+### Deep RNNs
