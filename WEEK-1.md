@@ -92,6 +92,9 @@ So because of this problem, the basic RNN model has many `local influences`, mea
 
 What can we do about it?    
 ### Gated Recurrent Unit(GRU)
+ Gated Recurrent Unit which is a modification to the RNN hidden layer that makes it much better capturing long range connections and helps a lot with the vanishing gradient problems.
+
+![](https://github.com/xuyanMax/image-cache/blob/master/rnn/GRU.png)
 
 ### Long Short Term Memory(LSTM)
 
