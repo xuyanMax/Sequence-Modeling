@@ -97,6 +97,25 @@ What can we do about it?
 ![](https://github.com/xuyanMax/image-cache/blob/master/rnn/GRU.png)
 
 ### Long Short Term Memory(LSTM)
+According to [Understanding LSTM Networks](http://colah.github.io/posts/2015-08-Understanding-LSTMs/)
+
+> Long Short Term Memory networks – usually just called “LSTMs” – are a special kind of RNN, capable of learning long-term dependencies. They were introduced by Hochreiter & Schmidhuber (1997), and were refined and popularized by many people in following work.1 They work tremendously well on a large variety of problems, and are now widely used.
+> 
+All recurrent neural networks have the form of a chain of repeating modules of neural network. In standard RNNs, this repeating module will have a very simple structure, such as a single tanh layer.
+> 
+LSTMs also have this chain like structure, but the repeating module has a different structure. Instead of having a single neural network layer, there are four, interacting in a very special way.
+
+![](https://github.com/xuyanMax/image-cache/blob/master/rnn/lstm.png)
+
+> The LSTM does have the ability to remove or add information to the cell state, carefully regulated by structures called `gates`.
+
+> Gates are a way to optionally let information through. They are composed out of a sigmoid neural net layer and a pointwise multiplication operation.
+
+![](https://github.com/xuyanMax/image-cache/blob/master/rnn/pointwise.png)
+
+> The sigmoid layer outputs numbers between zero and one, describing how much of each component should be let through. A value of zero means “let nothing through,” while a value of one means “let everything through!”
+
+> An LSTM has three of these gates(forget gate, update gate & output gate), to protect and control the cell state.
 
 ### Bidirectional RNN
 
