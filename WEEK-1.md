@@ -139,4 +139,10 @@ Finally, we need to decide what we’re going to output. This output will be bas
 For a lots of NLP problems, for a lot of text with natural language processing problems, a bidirectional RNN with a LSTM appears to be commonly used.
 
 The disadvantage of the bidirectional RNN is that `you do need the entire sequence of data before you can make predictions anywhere`. So, for example, if you're building a speech recognition system, then the BRNN will let you take into account the entire speech utterance but if you use this straightforward implementation, you need to wait for the person to stop talking to get the entire utterance before you can actually process it and make a speech recognition prediction. So for a real type speech recognition applications, they're somewhat more complex modules as well rather than just using the standard bidirectional RNN as you've seen here. But for a lot of natural language processing applications where you can get the entire sentence all the same time, the standard BRNN algorithm is actually very effective. 
+
 ### Deep RNNs
+The different versions of RNNs you've seen so far will already work quite well by themselves. But for learning very complex functions sometimes is useful to stack multiple layers of RNNs together to build even deeper versions of these models. 
+
+But I've changed the notation a little bit which is that, instead of writing this as a0 for the activation time zero, I've added this square bracket 1 to denote that this is for layer one. So the notation we're going to use is a[l] to denote that it's an activation associated with layer l and then <t> to denote that that's associated over time t.
+    
+![](https://github.com/xuyanMax/image-cache/blob/master/rnn/deep_rnn.png)
