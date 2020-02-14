@@ -37,7 +37,7 @@ Language model predicts the possibilities of the next sentences of a particular 
 Training set: a large corpus of English text
 Tokenize the English sentence, which means to form a <vocabulary, index> mapping using one-hot vectors.
 
-When sentences end, it is common to add and extra token called `EOS` (End of Sentence)
+When sentences end, it is common to add an extra token called `EOS` (End of Sentence)
 
 ### Build an RNN to model the different chances of sequences
 So each step in the RNN will look at some set of preceding words such as, given the first three words, what is the distribution over the next word? And so this RNN learns to predict one word at a time going from left to right.
@@ -58,18 +58,20 @@ The probability P of given a new sentence (y1, y2, y3):
 
 After you train a sequence model, one of the ways you can informally get a sense of what is learned is to have a sample novel sequences.
 
-So the network was trained using this structure shown at the top. But to sample, you do something slightly different, so what you want to do is `first sample what is the first word you want your model to generate`. And so for that you input the `usual x1 equals 0`, `a0 equals 0`. And now your first time stamp will have some max probability over possible outputs. So what you do is you then `randomly sample` according to this soft max distribution. So what the soft max distribution gives you is it tells you what is the chance that it refers to this a, what is the chance that it refers to this Aaron? What's the chance it refers to Zulu, what is the chance that the first word is the Unknown word token. Maybe it was a chance it was a end of sentence token. And then you take this vector and use, for example, the numpy command `np.random.choice` to sample according to distribution defined by this vector probabilities, and that lets you sample the first words. Next you then go on to the second time step, and now remember that the second time step is expecting this `y1 as input`. But what you do is you then take the y1 hat that you just sampled and pass that in here as the input to the next timestamps. So whatever works, you just chose the first time step passes this input in the second position, and then this soft max will make a prediction for what is y hat 2. 
+So the network was trained using this structure shown at the top. But to sample, you do something slightly different, so what you want to do is first sample what is the first word you want your model to generate. And so for that you input the `usual x1 equals 0`, `a0 equals 0`. And now your first time stamp will have some max probability over possible outputs. So what you do is you then `randomly sample` according to this soft max distribution. So what the soft max distribution gives you is it tells you what is the chance that it refers to this a, what is the chance that it refers to this Aaron? What's the chance it refers to Zulu, what is the chance that the first word is the Unknown word token. Maybe it was a chance of a token of the end of sentence. 
+
+And then you take this vector and use, for example, the numpy command `np.random.choice` to sample according to distribution defined by this vector probabilities, and that lets you sample the first words. Next you then go on to the second time step, and now remember that the second time step is expecting this `y1 as input`. But what you do is you then take the y1 hat that you just sampled and pass that in here as the input to the next timestamps. So whatever works, you just chose the first time step passes this input in the second position, and then this soft max will make a prediction for what is y hat 2. 
 ![](https://github.com/xuyanMax/image-cache/blob/master/rnn/rnn_sampling.png)
 
 #### Word-Level RNN vs. Character-Level RNN
-For word level language model, your vocabulary contains words like, `[a, aarun, ...zulu, <UNK>]`. Whereas for character language model, your vocabulary contains characters like '[a,b,c,...z,A,B,C,...Z,0,1,2,...9,.,;, ,‘,...]'.
+For word level language model, your `vocabulary` contains words like, `[a, aarun, ...zulu, <UNK>]`. Whereas for character language model, your vocabulary contains characters like '[a,b,c,...z,A,B,C,...Z,0,1,2,...9,.,;, ,‘,...]'.
 
-Using character-level RNN has some pros and cons.
+**Using character-level RNN has some pros and cons.**
 
 The advantages of character-level RNN:
 - No need to worry about unknown word tokens. It is able to assign a sequence like `mau` non-zero probability. Whereas if `mau` is out of your vocabulary for the word-level language model, you just have to assign it the unknown word token.
 
-The `drawbacks` of using character-level RNN includes:
+The drawbacks of using character-level RNN includes:
 - You end up with much longer sequences (Many English sentence will have 10-20 words but may have many dozens of characters, like (a,b,c,...,z, A,B,C,...,Z,0,1,2,...,9,;, ,/,...))
 - It is more hardware, computationally expensive to train, which is not widely used today.
 - It is not as good as word-level language model at `capturing long range dependencies` between how the earlier parts of the sentence also affect the later parts of the sentence.
@@ -92,7 +94,7 @@ So because of this problem, the basic RNN model has many `local influences`, mea
 
 What can we do about it?    
 ### Gated Recurrent Unit(GRU)
- Gated Recurrent Unit which is a modification to the RNN hidden layer that makes it much better capturing long range connections and helps a lot with the vanishing gradient problems.
+ Gated Recurrent Unit which is a modification to the RNN hidden layer that makes it much better at capturing long range connections and helping a lot with the vanishing gradient problems.
 
 ![](https://github.com/xuyanMax/image-cache/blob/master/rnn/GRU.png)
 
@@ -115,7 +117,7 @@ The LSTM does have the ability to remove or add information to the cell state, c
 
 The sigmoid layer outputs numbers between zero and one, describing how much of each component should be let through. A value of zero means “let nothing through,” while a value of one means “let everything through!”
 
-An LSTM has three of these gates(forget gate, update gate & output gate), to protect and control the cell state.
+**An LSTM has three of these gates(forget gate, update gate & output gate), to protect and control the cell state.**
 
 #### Step-by-Step LSTM Walk Through
 The first step in our LSTM is to `decide what information we’re going to throw away from the cell state`. This decision is made by a sigmoid layer called the “forget gate layer.”
@@ -144,5 +146,5 @@ The disadvantage of the bidirectional RNN is that `you do need the entire sequen
 The different versions of RNNs you've seen so far will already work quite well by themselves. But for learning very complex functions sometimes is useful to stack multiple layers of RNNs together to build even deeper versions of these models. 
 
 But I've changed the notation a little bit which is that, instead of writing this as a0 for the activation time zero, I've added this square bracket 1 to denote that this is for layer one. So the notation we're going to use is a[l] to denote that it's an activation associated with layer l and then <t> to denote that that's associated over time t.
-    
+
 ![](https://github.com/xuyanMax/image-cache/blob/master/rnn/deep_rnn.png)
